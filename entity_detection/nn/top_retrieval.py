@@ -4,14 +4,14 @@ import time
 import os
 import numpy as np
 from tqdm import tqdm
-from torchtext import data
+from torchtext.legacy import data
 from args import get_args
 import random
 from evaluation import evaluation
 from sq_entity_dataset import SQdataset
 
 
-np.set_printoptions(threshold=np.nan)
+np.set_printoptions(threshold=1000)
 # Set default configuration in : args.py
 args = get_args()
 
@@ -22,11 +22,14 @@ random.seed(args.seed)
 
 if not args.cuda:
     args.gpu = -1
+    device = torch.device('cpu')
 if torch.cuda.is_available() and args.cuda:
     print("Note: You are using GPU for training")
     torch.cuda.set_device(args.gpu)
     torch.cuda.manual_seed(args.seed)
+    device = torch.device('cuda:{}'.format(args.gpu))
 if torch.cuda.is_available() and not args.cuda:
+    device = torch.device('cpu')
     print("Warning: You have Cuda but not use it. You are using CPU for training.")
 
 TEXT = data.Field(lower=True)
@@ -36,11 +39,11 @@ train, dev, test = SQdataset.splits(TEXT, ED, path=args.data_dir)
 TEXT.build_vocab(train, dev, test)
 ED.build_vocab(train, dev, test)
 
-train_iter = data.Iterator(train, batch_size=args.batch_size, device=args.gpu, train=True, repeat=False,
+train_iter = data.Iterator(train, batch_size=args.batch_size, device=device, train=True, repeat=False,
                                    sort=False, shuffle=True)
-dev_iter = data.Iterator(dev, batch_size=args.batch_size, device=args.gpu, train=False, repeat=False,
+dev_iter = data.Iterator(dev, batch_size=args.batch_size, device=device, train=False, repeat=False,
                                    sort=False, shuffle=False)
-test_iter = data.Iterator(test, batch_size=args.batch_size, device=args.gpu, train=False, repeat=False,
+test_iter = data.Iterator(test, batch_size=args.batch_size, device=device, train=False, repeat=False,
                                    sort=False, shuffle=False)
 
 # load the model
