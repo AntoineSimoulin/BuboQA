@@ -1,4 +1,4 @@
-from torchtext import data
+from torchtext.legacy import data
 
 class SQdataset(data.TabularDataset):
     @classmethod
