@@ -4,6 +4,14 @@ This repo contains code for the following paper:
 
 + Salman Mohammed, Peng Shi, and Jimmy Lin. [Strong Baselines for Simple Question Answering over Knowledge Graphs with and without Neural Networks](http://aclweb.org/anthology/N18-2047). *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)*, pages 291-296, May 2018, New Orleans, Louisiana.
 
+## Running the app
+
+After you train the model, you can use the demo application by running the following command in the `app` directory.
+
+```bash
+streamlit run bubo_qa_app.py
+```
+
 ## Running the Code
 
 Install the following Python 3 packages:
